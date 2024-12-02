@@ -37,7 +37,7 @@ public class HibernateUtil {
             em.getTransaction().begin();
             em.persist(departamento);
             em.getTransaction().commit();
-            System.out.println("\nSe ha creado del departamento de nombre: "+ nombreDepartamento);
+            System.out.println("\nSe ha creado el departamento de nombre: "+ nombreDepartamento);
         }catch(PersistenceException e){
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();
@@ -63,5 +63,33 @@ public class HibernateUtil {
         return Optional.ofNullable(empregado);
     }
 
+    public void deleteDepartamento(int numDepartamento){
+        try{
+            em.getTransaction().begin();
+            em.remove(em.find(Departamento.class, numDepartamento));
+            em.getTransaction().commit();
+            System.out.println("\nDepartamento eliminado exitosamente.");
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.out.println("No se pudo borrar al departamento de id: "+numDepartamento);
+        }
+    }
+
+    public void cambiarNombreDepartamento(int numDepartamento, String nombreDepartamento){
+        try{
+            Departamento departamento = em.find(Departamento.class, numDepartamento);
+            if (departamento != null){
+                em.getTransaction().begin();
+                departamento.setNomedepartamento(nombreDepartamento);
+                em.getTransaction().commit();
+                System.out.println("Nombre de departamento modificado exitosamente.");
+            }else{
+                System.out.println("No se encuentra el departamento con id "+ numDepartamento);
+            }
+        }catch (Exception e){
+            em.getTransaction().rollback();
+            System.out.println("Error al cambiar el nombre de departamento");
+        }
+    }
 
 }

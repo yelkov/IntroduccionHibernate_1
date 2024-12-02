@@ -9,7 +9,9 @@ public class Main {
     public static void main(String[] args) {
         HibernateUtil hu = new HibernateUtil();
         hu.conectar();
+
         hu.crearDepartamento("Ventas");
+        hu.crearDepartamento("Marketing");
 
         Empregado empregado = new Empregado("123456789","Miguel","Pérez",null,1500.0f, LocalDate.of(1990,12,10),'M');
         hu.crearEmpregado(empregado);
@@ -17,9 +19,12 @@ public class Main {
         Optional<Empregado> empregado2 = hu.getEmpregado("123456789");
         if(empregado2.isPresent()){
             System.out.println(empregado2.get());
-        }else{
+        }else {
             System.out.println("Empregado con nss: 123456789 no encontrado.");
         }
+
+        hu.deleteDepartamento(1);
+        hu.cambiarNombreDepartamento(3,"Informática");
 
         hu.desconectar();
 
